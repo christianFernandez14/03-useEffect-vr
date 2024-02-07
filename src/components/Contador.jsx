@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react'
+import AvisoComponent from './AvisoComponent'
 
 const Contador = () => {
 
   const [contador, setContador] = useState(0)
 
-  useEffect(()=> {
-    console.log(`Se ha modificado ${contador} veces`)
+  useEffect(() => {
+    // console.log(`Se ha modificado ${contador} veces`)
 
-  },[contador])
+  }, [contador])
 
   return (
     <div>
@@ -25,6 +26,8 @@ const Contador = () => {
           >menos</button>
         </div>
       </div>
+
+      {contador > 4 && <AvisoComponent cambios={contador} />}
 
     </div>
   )

@@ -6,11 +6,11 @@ const PruebasComponent = () => {
   const [usuario, setUsuario] = useState('Christian Fernandez')
 
   useEffect(() => {
-    console.log('Se a cargado el componente Principal ')
+    // console.log('Se a cargado el componente Principal ')
   }, [])
 
   useEffect(() => {
-    console.log('Estas actualizando el usuario ')
+    // console.log('Estas actualizando el usuario ')
   }, [usuario])
 
   const handleUsuario = e => {
