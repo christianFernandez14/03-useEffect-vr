@@ -1,13 +1,16 @@
+import PruebasComponent from "./components/PruebasComponent"
 
 
 const  App = () =>  {
 
   return (
     <div>
-      <h2>Hook UseEffect</h2>
+      <h1>Hook UseEffect</h1>
       <hr />
+      <PruebasComponent />
     </div>
   )
 }
 
 export default App
+    
