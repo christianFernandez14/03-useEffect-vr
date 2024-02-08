@@ -32,7 +32,7 @@ const AjaxComponent = () => {
     ])
   }
 
-  // Datos desde una API 
+  // Datos desde una API con Promesa (solo fetch)
   const getUsuariosAPI = () => {
     const URL = 'https://reqres.in/api/users?page=1'
     fetch(URL)
@@ -47,9 +47,20 @@ const AjaxComponent = () => {
       )
   }
 
+  // Datos desde una API con Async Await
+  const getUsuariosAPIAW = async() => {
+    const URL = 'https://reqres.in/api/users?page=2'   
+    const peticion = await fetch(URL)
+    const {data} = await peticion.json()
+
+    setUsuarios(data)
+  }
+
+
   useEffect(() => {
     // getUsuarios()
-    getUsuariosAPI()
+    // getUsuariosAPI()
+    getUsuariosAPIAW()
 
   }, [])
 
