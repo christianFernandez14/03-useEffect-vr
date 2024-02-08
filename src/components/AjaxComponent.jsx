@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 const AjaxComponent = () => {
 
   const [usuarios, setUsuarios] = useState([])
+  const [cargando, setCargando] = useState(true)
 
 
   // Datos duros (estaticos)
@@ -48,12 +49,17 @@ const AjaxComponent = () => {
   }
 
   // Datos desde una API con Async Await
-  const getUsuariosAPIAW = async() => {
-    const URL = 'https://reqres.in/api/users?page=2'   
-    const peticion = await fetch(URL)
-    const {data} = await peticion.json()
+  const getUsuariosAPIAW = () => {
 
-    setUsuarios(data)
+    setTimeout(async () => {
+      const URL = 'https://reqres.in/api/users?page=2'
+      const peticion = await fetch(URL)
+      const { data } = await peticion.json()
+
+      setUsuarios(data)
+      setCargando(false)
+    }, 4000);
+
   }
 
 
@@ -68,15 +74,28 @@ const AjaxComponent = () => {
     <div>
       <h2>Listado de usuarios via Ajax</h2>
       <br />
-      <ol>
-        {
-          usuarios.map(usuario => (
-            <li key={usuario.id}>
-              {usuario.first_name} {usuario.last_name}
-            </li>
-          ))
-        }
-      </ol>
+      {
+        cargando
+          ? 'Cargando datos...'
+          : (
+            <ol>
+              {
+                usuarios.map(usuario => (
+                  <li key={usuario.id}>
+                    <img 
+                    src={usuario.avatar} 
+                    alt={`Imaagen de ${usuario.first_name}`} 
+                    width={30}
+                    />
+                    &nbsp;
+                    {usuario.first_name} {usuario.last_name}
+                  </li>
+                ))
+              }
+            </ol>
+          )
+      }
+
     </div>
   )
 }
