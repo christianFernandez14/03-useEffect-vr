@@ -4,6 +4,8 @@ const AjaxComponent = () => {
 
   const [usuarios, setUsuarios] = useState([])
   const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState('')
+
 
 
   // Datos duros (estaticos)
@@ -34,34 +36,39 @@ const AjaxComponent = () => {
   }
 
   // Datos desde una API con Promesa (solo fetch)
-  const getUsuariosAPI = () => {
-    const URL = 'https://reqres.in/api/users?page=1'
-    fetch(URL)
-      .then(respuesta => respuesta.json())
-      .then(
-        resultado => {
-          setUsuarios(resultado.data)
-        },
-        error => {
-          console.log(error);
-        }
-      )
-  }
+  // const getUsuariosAPI = () => {
+  //   const URL = 'https://reqres.in/api/users?page=1'
+  //   fetch(URL)
+  //     .then(respuesta => respuesta.json())
+  //     .then(
+  //       resultado => {
+  //         setUsuarios(resultado.data)
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //     )
+  // }
 
   // Datos desde una API con Async Await
   const getUsuariosAPIAW = () => {
 
     setTimeout(async () => {
-      const URL = 'https://reqres.in/api/users?page=2'
-      const peticion = await fetch(URL)
-      const { data } = await peticion.json()
+      try {
+        const URL = 'https://reqres.in/api/users?page=2'
+        const peticion = await fetch(URL)
+        const { data } = await peticion.json()
 
-      setUsuarios(data)
-      setCargando(false)
-    }, 4000);
+        setUsuarios(data)
+        setCargando(false)
 
+      } catch (error) {
+        setError(error.message)
+        // console.log('El error => ', error.message)
+      }
+
+    }, 2000);
   }
-
 
   useEffect(() => {
     // getUsuarios()
@@ -70,6 +77,8 @@ const AjaxComponent = () => {
 
   }, [])
 
+  // HAY UN BUG QUE EN LA TOMA DEL ERROR / CUANDO USO TERNARIOS
+
   return (
     <div>
       <h2>Listado de usuarios via Ajax</h2>
@@ -77,23 +86,23 @@ const AjaxComponent = () => {
       {
         cargando
           ? 'Cargando datos...'
-          : (
-            <ol>
-              {
-                usuarios.map(usuario => (
-                  <li key={usuario.id}>
-                    <img 
-                    src={usuario.avatar} 
-                    alt={`Imaagen de ${usuario.first_name}`} 
-                    width={30}
-                    />
-                    &nbsp;
-                    {usuario.first_name} {usuario.last_name}
-                  </li>
-                ))
-              }
-            </ol>
-          )
+          : !error.length
+            ? (<ol>
+                {
+                  usuarios.map(usuario => (
+                    <li key={usuario.id}>
+                      <img
+                        src={usuario.avatar}
+                        alt={`Imagen de ${usuario.first_name}`}
+                        width={30}
+                      />
+                      &nbsp;
+                      {usuario.first_name} {usuario.last_name}
+                    </li>
+                  ))
+                }
+              </ol>)
+            : <h3>{error}</h3>
       }
 
     </div>
