@@ -1,14 +1,11 @@
-import {useState, useEffect} from 'react'
+import { useState, useEffect } from 'react'
 
 const AjaxComponent = () => {
 
   const [usuarios, setUsuarios] = useState([])
 
-  useEffect (()=> {
-    getUsuarios()
 
-  },[])
-
+  // Datos duros (estaticos)
   const getUsuarios = () => {
     setUsuarios([
       {
@@ -34,6 +31,27 @@ const AjaxComponent = () => {
       }
     ])
   }
+
+  // Datos desde una API 
+  const getUsuariosAPI = () => {
+    const URL = 'https://reqres.in/api/users?page=1'
+    fetch(URL)
+      .then(respuesta => respuesta.json())
+      .then(
+        resultado => {
+          setUsuarios(resultado.data)
+        },
+        error => {
+          console.log(error);
+        }
+      )
+  }
+
+  useEffect(() => {
+    // getUsuarios()
+    getUsuariosAPI()
+
+  }, [])
 
   return (
     <div>
